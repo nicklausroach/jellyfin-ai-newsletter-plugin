@@ -236,9 +236,9 @@ update_manifest_checksum() {
     local checksum=""
 
     if command -v sha256sum >/dev/null 2>&1; then
-        checksum=$(sha256sum "${zip_name}" | cut -d' ' -f1)
+        checksum=$(md5 "${zip_name}" | cut -d' ' -f1)
     elif command -v shasum >/dev/null 2>&1; then
-        checksum=$(shasum -a 256 "${zip_name}" | cut -d' ' -f1)
+        checksum=$(md5 -a 256 "${zip_name}" | cut -d' ' -f1)
     fi
 
     cd ..
