@@ -1,0 +1,13 @@
+---
+name: "jellyfin-plugin-ainewsletter"
+guid: "8B0B7F7A-3F8C-4F5D-9C2A-1E5F8B7A3C4D"
+version: "1.0.0.0"
+nicename: "AI Newsletter"
+description: "Generates AI-powered email newsletters featuring recently added media content"
+overview: "An intelligent newsletter plugin that uses AI to create human-like descriptions and recommendations for recently added content in your Jellyfin library."
+prjdir: "Jellyfin.Plugin.AINewsletter"
+artifacts:
+  - "Jellyfin.Plugin.AINewsletter.dll"
+build_image: "mcr.microsoft.com/dotnet/sdk:8.0-alpine"
+dotnet_configuration: "Release"
+dotnet_framework: "net8.0"
