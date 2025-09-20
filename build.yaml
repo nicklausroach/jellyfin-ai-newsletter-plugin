@@ -1,7 +1,7 @@
 ---
 name: "jellyfin-plugin-ainewsletter"
 guid: "8B0B7F7A-3F8C-4F5D-9C2A-1E5F8B7A3C4D"
-version: "1.0.0.1"
+version: "1.0.0.2"
 nicename: "AI Newsletter"
 description: "Generates AI-powered email newsletters featuring recently added media content"
 overview: "An intelligent newsletter plugin that uses AI to create human-like descriptions and recommendations for recently added content in your Jellyfin library."

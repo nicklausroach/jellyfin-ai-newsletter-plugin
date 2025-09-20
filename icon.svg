@@ -1,0 +1,61 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="aiGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#5b73e8;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Background Circle -->
+  <circle cx="128" cy="128" r="120" fill="url(#bgGradient)" filter="url(#shadow)"/>
+
+  <!-- Email envelope base -->
+  <rect x="48" y="96" width="160" height="120" rx="8" ry="8" fill="#ffffff" opacity="0.95"/>
+
+  <!-- Email envelope flap -->
+  <path d="M 48 96 L 128 156 L 208 96 Z" fill="#f0f0f0" opacity="0.8"/>
+
+  <!-- Email lines (content) -->
+  <rect x="64" y="128" width="96" height="4" rx="2" fill="#e0e0e0"/>
+  <rect x="64" y="140" width="128" height="4" rx="2" fill="#e0e0e0"/>
+  <rect x="64" y="152" width="80" height="4" rx="2" fill="#e0e0e0"/>
+  <rect x="64" y="164" width="112" height="4" rx="2" fill="#e0e0e0"/>
+  <rect x="64" y="176" width="64" height="4" rx="2" fill="#e0e0e0"/>
+
+  <!-- AI Brain/Circuit -->
+  <g transform="translate(160, 64)">
+    <!-- Brain outline -->
+    <circle cx="24" cy="24" r="20" fill="url(#aiGradient)" opacity="0.9"/>
+
+    <!-- Neural network nodes -->
+    <circle cx="18" cy="18" r="2" fill="#ffffff"/>
+    <circle cx="30" cy="18" r="2" fill="#ffffff"/>
+    <circle cx="24" cy="30" r="2" fill="#ffffff"/>
+    <circle cx="15" cy="30" r="1.5" fill="#ffffff" opacity="0.8"/>
+    <circle cx="33" cy="30" r="1.5" fill="#ffffff" opacity="0.8"/>
+
+    <!-- Neural connections -->
+    <path d="M 18 18 L 30 18 M 18 18 L 24 30 M 30 18 L 24 30 M 15 30 L 24 30 M 33 30 L 24 30"
+          stroke="#ffffff" stroke-width="1" opacity="0.6"/>
+  </g>
+
+  <!-- Jellyfin-style accent -->
+  <circle cx="64" cy="80" r="6" fill="#00a4dc" opacity="0.8"/>
+
+  <!-- Newsletter sparkles/stars -->
+  <g opacity="0.7">
+    <path d="M 72 200 L 74 204 L 78 202 L 74 206 L 72 200 Z" fill="#ffffff"/>
+    <path d="M 184 76 L 186 80 L 190 78 L 186 82 L 184 76 Z" fill="#ffffff"/>
+    <path d="M 40 160 L 42 164 L 46 162 L 42 166 L 40 160 Z" fill="#ffffff"/>
+  </g>
+
+  <!-- Subtle glow effect -->
+  <circle cx="128" cy="128" r="118" fill="none" stroke="url(#aiGradient)" stroke-width="2" opacity="0.3"/>
+</svg>
