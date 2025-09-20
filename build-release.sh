@@ -6,7 +6,7 @@
 set -e  # Exit on any error
 
 # Configuration
-VERSION="1.0.0.4"
+VERSION="1.0.0.5"
 PLUGIN_NAME="jellyfin-plugin-ainewsletter"
 RELEASE_DIR="release"
 BUILD_CONFIG="Release"

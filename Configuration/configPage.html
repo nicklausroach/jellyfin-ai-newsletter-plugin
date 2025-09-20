@@ -1,343 +1,309 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Newsletter Plugin</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            margin: 20px;
-            background: #f5f5f5;
-        }
-        .config-container {
-            max-width: 800px;
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .section {
-            margin-bottom: 30px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 20px;
-        }
-        .section:last-child {
-            border-bottom: none;
-        }
-        .section-title {
-            color: #333;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            border-left: 4px solid #007acc;
-            padding-left: 12px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: #555;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-        input[type="checkbox"] {
-            width: auto;
-            margin-right: 8px;
-        }
-        .help-text {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
-        }
-        .two-column {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        button {
-            background: #007acc;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        button:hover {
-            background: #005a9e;
-        }
-    </style>
-</head>
-<body>
-    <div class="config-container">
-        <h1>AI Newsletter Configuration</h1>
-        
-        <form id="AINewsletterConfigForm">
-            <!-- AI Configuration Section -->
-            <div class="section">
-                <div class="section-title">AI Configuration</div>
-                <div class="form-group">
-                    <label for="AIProvider">AI Provider:</label>
-                    <select id="AIProvider" name="AIProvider">
-                        <option value="OpenAI">OpenAI</option>
-                        <option value="Anthropic">Anthropic</option>
-                        <option value="Custom">Custom API</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="AIApiKey">API Key:</label>
-                    <input type="password" id="AIApiKey" name="AIApiKey" placeholder="Enter your AI API key">
-                    <div class="help-text">Your API key for the selected AI provider</div>
-                </div>
-                <div class="two-column">
-                    <div class="form-group">
-                        <label for="AIModel">Model:</label>
-                        <input type="text" id="AIModel" name="AIModel" placeholder="gpt-4o-mini">
-                        <div class="help-text">AI model to use for content generation</div>
-                    </div>
-                    <div class="form-group">
-                        <label for="AIBaseUrl">Base URL:</label>
-                        <input type="url" id="AIBaseUrl" name="AIBaseUrl" placeholder="https://api.openai.com/v1">
-                        <div class="help-text">API endpoint URL</div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="NewsletterTone">Newsletter Tone:</label>
-                    <select id="NewsletterTone" name="NewsletterTone">
-                        <option value="friendly">Friendly</option>
-                        <option value="professional">Professional</option>
-                        <option value="casual">Casual</option>
-                        <option value="enthusiastic">Enthusiastic</option>
-                        <option value="cinephile">Movie Buff</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="EnablePersonalization" name="EnablePersonalization">
-                        Enable personalized recommendations
-                    </label>
-                </div>
-                <div class="form-group">
-                    <label for="CustomPromptAdditions">Custom Prompt Additions:</label>
-                    <textarea id="CustomPromptAdditions" name="CustomPromptAdditions" rows="3" placeholder="Additional instructions for the AI..."></textarea>
-                    <div class="help-text">Optional custom instructions to add to the AI prompt</div>
-                </div>
-            </div>
+<div id="AINewsletterConfigPage" data-role="page" class="page type-interior pluginConfigurationPage AINewsletterConfigPage withTabs" data-require="emby-checkbox,emby-input,emby-select">
+    <div data-role="content">
+        <div class="content-primary">
+            <form id="AINewsletterConfigForm">
 
-            <!-- Email Configuration Section -->
-            <div class="section">
-                <div class="section-title">Email Configuration</div>
-                <div class="two-column">
-                    <div class="form-group">
-                        <label for="SmtpServer">SMTP Server:</label>
-                        <input type="text" id="SmtpServer" name="SmtpServer" placeholder="smtp.gmail.com">
+                <!-- AI Configuration Section -->
+                <div class="verticalSection">
+                    <div class="sectionTitleContainer flex align-items-center">
+                        <h2 class="sectionTitle">AI Configuration</h2>
                     </div>
-                    <div class="form-group">
-                        <label for="SmtpPort">SMTP Port:</label>
-                        <input type="number" id="SmtpPort" name="SmtpPort" placeholder="587">
-                    </div>
-                </div>
-                <div class="two-column">
-                    <div class="form-group">
-                        <label for="SmtpUsername">SMTP Username:</label>
-                        <input type="text" id="SmtpUsername" name="SmtpUsername" placeholder="your-email@gmail.com">
-                    </div>
-                    <div class="form-group">
-                        <label for="SmtpPassword">SMTP Password:</label>
-                        <input type="password" id="SmtpPassword" name="SmtpPassword" placeholder="Your app password">
-                    </div>
-                </div>
-                <div class="two-column">
-                    <div class="form-group">
-                        <label for="SenderEmail">Sender Email:</label>
-                        <input type="email" id="SenderEmail" name="SenderEmail" placeholder="jellyfin@yourdomain.com">
-                    </div>
-                    <div class="form-group">
-                        <label for="SenderName">Sender Name:</label>
-                        <input type="text" id="SenderName" name="SenderName" placeholder="Jellyfin AI Newsletter">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="SmtpUseSsl" name="SmtpUseSsl" checked>
-                        Use SSL/TLS
-                    </label>
-                </div>
-                <div class="form-group">
-                    <label for="Recipients">Recipients (one per line):</label>
-                    <textarea id="Recipients" name="Recipients" rows="4" placeholder="user1@example.com&#10;user2@example.com"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="EmailSubjectTemplate">Email Subject Template:</label>
-                    <input type="text" id="EmailSubjectTemplate" name="EmailSubjectTemplate" placeholder="🎬 Your Weekly Jellyfin Update - {ItemCount} New Items">
-                    <div class="help-text">Use {ItemCount} for number of new items</div>
-                </div>
-            </div>
 
-            <!-- Content Configuration Section -->
-            <div class="section">
-                <div class="section-title">Content Configuration</div>
-                <div class="two-column">
-                    <div class="form-group">
-                        <label for="ScheduleIntervalHours">Schedule Interval (hours):</label>
-                        <input type="number" id="ScheduleIntervalHours" name="ScheduleIntervalHours" min="1" placeholder="24">
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="AIProvider">AI Provider:</label>
+                        <select is="emby-select" class="emby-select-withcolor" id="AIProvider" name="AIProvider">
+                            <option value="OpenAI">OpenAI</option>
+                            <option value="Anthropic">Anthropic</option>
+                            <option value="Custom">Custom API</option>
+                        </select>
                     </div>
-                    <div class="form-group">
-                        <label for="DaysBackToScan">Days Back to Scan:</label>
-                        <input type="number" id="DaysBackToScan" name="DaysBackToScan" min="1" placeholder="7">
+
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="AIApiKey">API Key:</label>
+                        <input is="emby-input" type="password" id="AIApiKey" name="AIApiKey" class="emby-input" />
+                        <div class="fieldDescription">Your API key for the selected AI provider</div>
+                    </div>
+
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="AIModel">Model:</label>
+                        <input is="emby-input" type="text" id="AIModel" name="AIModel" class="emby-input" />
+                        <div class="fieldDescription">AI model to use for content generation (e.g., gpt-4o-mini)</div>
+                    </div>
+
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="AIBaseUrl">Base URL:</label>
+                        <input is="emby-input" type="url" id="AIBaseUrl" name="AIBaseUrl" class="emby-input" />
+                        <div class="fieldDescription">API endpoint URL</div>
+                    </div>
+
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="NewsletterTone">Newsletter Tone:</label>
+                        <select is="emby-select" class="emby-select-withcolor" id="NewsletterTone" name="NewsletterTone">
+                            <option value="friendly">Friendly</option>
+                            <option value="professional">Professional</option>
+                            <option value="casual">Casual</option>
+                            <option value="enthusiastic">Enthusiastic</option>
+                            <option value="cinephile">Movie Buff</option>
+                        </select>
+                    </div>
+
+                    <div class="checkboxContainer checkboxContainer-withDescription">
+                        <label class="emby-checkbox-label">
+                            <input is="emby-checkbox" type="checkbox" id="EnablePersonalization" name="EnablePersonalization" />
+                            <span>Enable personalized recommendations</span>
+                        </label>
+                    </div>
+
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="CustomPromptAdditions">Custom Prompt Additions:</label>
+                        <textarea is="emby-input" id="CustomPromptAdditions" name="CustomPromptAdditions" class="emby-input" rows="3"></textarea>
+                        <div class="fieldDescription">Additional instructions for the AI</div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="MaxItemsPerNewsletter">Max Items per Newsletter:</label>
-                    <input type="number" id="MaxItemsPerNewsletter" name="MaxItemsPerNewsletter" min="1" placeholder="10">
-                </div>
-                <div class="form-group">
-                    <label for="ContentTypes">Content Types (comma-separated):</label>
-                    <input type="text" id="ContentTypes" name="ContentTypes" placeholder="Movie,Series,MusicAlbum">
-                    <div class="help-text">Types of content to include: Movie, Series, Season, Episode, MusicAlbum, Audio, Book</div>
-                </div>
-                <div class="form-group">
-                    <label for="IncludedLibraries">Included Libraries (comma-separated, leave empty for all):</label>
-                    <input type="text" id="IncludedLibraries" name="IncludedLibraries" placeholder="Movies,TV Shows">
-                </div>
-            </div>
 
-            <!-- Image Configuration Section -->
-            <div class="section">
-                <div class="section-title">Image Configuration</div>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="IncludePosters" name="IncludePosters" checked>
-                        Include posters in newsletters
-                    </label>
-                </div>
-                <div class="form-group">
-                    <label for="PosterHostingType">Poster Hosting:</label>
-                    <select id="PosterHostingType" name="PosterHostingType">
-                        <option value="JellyfinAPI">Jellyfin API</option>
-                        <option value="Imgur">Imgur</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="ImgurClientId">Imgur Client ID (if using Imgur):</label>
-                    <input type="text" id="ImgurClientId" name="ImgurClientId" placeholder="Your Imgur client ID">
-                </div>
-            </div>
+                <!-- Email Configuration Section -->
+                <div class="verticalSection">
+                    <div class="sectionTitleContainer flex align-items-center">
+                        <h2 class="sectionTitle">Email Configuration</h2>
+                    </div>
 
-            <!-- Advanced Settings -->
-            <div class="section">
-                <div class="section-title">Advanced Settings</div>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="EnableScheduledTask" name="EnableScheduledTask" checked>
-                        Enable scheduled newsletter generation
-                    </label>
-                </div>
-            </div>
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="SmtpServer">SMTP Server:</label>
+                        <input is="emby-input" type="text" id="SmtpServer" name="SmtpServer" class="emby-input" />
+                    </div>
 
-            <button type="submit">Save Configuration</button>
-        </form>
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="SmtpPort">SMTP Port:</label>
+                        <input is="emby-input" type="number" id="SmtpPort" name="SmtpPort" class="emby-input" />
+                    </div>
+
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="SmtpUsername">SMTP Username:</label>
+                        <input is="emby-input" type="text" id="SmtpUsername" name="SmtpUsername" class="emby-input" />
+                    </div>
+
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="SmtpPassword">SMTP Password:</label>
+                        <input is="emby-input" type="password" id="SmtpPassword" name="SmtpPassword" class="emby-input" />
+                    </div>
+
+                    <div class="checkboxContainer checkboxContainer-withDescription">
+                        <label class="emby-checkbox-label">
+                            <input is="emby-checkbox" type="checkbox" id="SmtpUseSsl" name="SmtpUseSsl" />
+                            <span>Use SSL/TLS</span>
+                        </label>
+                    </div>
+
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="SenderEmail">Sender Email:</label>
+                        <input is="emby-input" type="email" id="SenderEmail" name="SenderEmail" class="emby-input" />
+                    </div>
+
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="SenderName">Sender Name:</label>
+                        <input is="emby-input" type="text" id="SenderName" name="SenderName" class="emby-input" />
+                    </div>
+
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="Recipients">Recipients (one per line):</label>
+                        <textarea is="emby-input" id="Recipients" name="Recipients" class="emby-input" rows="4"></textarea>
+                    </div>
+
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="EmailSubjectTemplate">Email Subject Template:</label>
+                        <input is="emby-input" type="text" id="EmailSubjectTemplate" name="EmailSubjectTemplate" class="emby-input" />
+                        <div class="fieldDescription">Use {ItemCount} for number of new items</div>
+                    </div>
+                </div>
+
+                <!-- Content Configuration Section -->
+                <div class="verticalSection">
+                    <div class="sectionTitleContainer flex align-items-center">
+                        <h2 class="sectionTitle">Content Configuration</h2>
+                    </div>
+
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="ScheduleIntervalHours">Schedule Interval (hours):</label>
+                        <input is="emby-input" type="number" id="ScheduleIntervalHours" name="ScheduleIntervalHours" class="emby-input" min="1" />
+                    </div>
+
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="DaysBackToScan">Days Back to Scan:</label>
+                        <input is="emby-input" type="number" id="DaysBackToScan" name="DaysBackToScan" class="emby-input" min="1" />
+                    </div>
+
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="MaxItemsPerNewsletter">Max Items per Newsletter:</label>
+                        <input is="emby-input" type="number" id="MaxItemsPerNewsletter" name="MaxItemsPerNewsletter" class="emby-input" min="1" />
+                    </div>
+
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="ContentTypes">Content Types (comma-separated):</label>
+                        <input is="emby-input" type="text" id="ContentTypes" name="ContentTypes" class="emby-input" />
+                        <div class="fieldDescription">Types: Movie, Series, Season, Episode, MusicAlbum, Audio, Book</div>
+                    </div>
+
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="IncludedLibraries">Included Libraries (comma-separated):</label>
+                        <input is="emby-input" type="text" id="IncludedLibraries" name="IncludedLibraries" class="emby-input" />
+                        <div class="fieldDescription">Leave empty for all libraries</div>
+                    </div>
+                </div>
+
+                <!-- Image Configuration Section -->
+                <div class="verticalSection">
+                    <div class="sectionTitleContainer flex align-items-center">
+                        <h2 class="sectionTitle">Image Configuration</h2>
+                    </div>
+
+                    <div class="checkboxContainer checkboxContainer-withDescription">
+                        <label class="emby-checkbox-label">
+                            <input is="emby-checkbox" type="checkbox" id="IncludePosters" name="IncludePosters" />
+                            <span>Include posters in newsletters</span>
+                        </label>
+                    </div>
+
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="PosterHostingType">Poster Hosting:</label>
+                        <select is="emby-select" class="emby-select-withcolor" id="PosterHostingType" name="PosterHostingType">
+                            <option value="JellyfinAPI">Jellyfin API</option>
+                            <option value="Imgur">Imgur</option>
+                        </select>
+                    </div>
+
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="ImgurClientId">Imgur Client ID:</label>
+                        <input is="emby-input" type="text" id="ImgurClientId" name="ImgurClientId" class="emby-input" />
+                        <div class="fieldDescription">Required if using Imgur hosting</div>
+                    </div>
+                </div>
+
+                <!-- Advanced Settings -->
+                <div class="verticalSection">
+                    <div class="sectionTitleContainer flex align-items-center">
+                        <h2 class="sectionTitle">Advanced Settings</h2>
+                    </div>
+
+                    <div class="checkboxContainer checkboxContainer-withDescription">
+                        <label class="emby-checkbox-label">
+                            <input is="emby-checkbox" type="checkbox" id="EnableScheduledTask" name="EnableScheduledTask" />
+                            <span>Enable scheduled newsletter generation</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <button is="emby-button" type="submit" class="raised button-submit block emby-button">
+                        <span>Save</span>
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
+</div>
 
-    <script type="text/javascript">
-        var AINewsletterConfig = {
-            pluginId: '8B0B7F7A-3F8C-4F5D-9C2A-1E5F8B7A3C4D',
-            
-            loadPage: function () {
-                Dashboard.showLoadingMsg();
-                
-                ApiClient.getPluginConfiguration(AINewsletterConfig.pluginId).then(function (config) {
-                    document.getElementById('AIProvider').value = config.AIProvider || 'OpenAI';
-                    document.getElementById('AIApiKey').value = config.AIApiKey || '';
-                    document.getElementById('AIModel').value = config.AIModel || 'gpt-4o-mini';
-                    document.getElementById('AIBaseUrl').value = config.AIBaseUrl || 'https://api.openai.com/v1';
-                    document.getElementById('NewsletterTone').value = config.NewsletterTone || 'friendly';
-                    document.getElementById('EnablePersonalization').checked = config.EnablePersonalization !== false;
-                    document.getElementById('CustomPromptAdditions').value = config.CustomPromptAdditions || '';
-                    
-                    document.getElementById('SmtpServer').value = config.SmtpServer || '';
-                    document.getElementById('SmtpPort').value = config.SmtpPort || 587;
-                    document.getElementById('SmtpUsername').value = config.SmtpUsername || '';
-                    document.getElementById('SmtpPassword').value = config.SmtpPassword || '';
-                    document.getElementById('SmtpUseSsl').checked = config.SmtpUseSsl !== false;
-                    document.getElementById('SenderEmail').value = config.SenderEmail || '';
-                    document.getElementById('SenderName').value = config.SenderName || 'Jellyfin AI Newsletter';
-                    document.getElementById('Recipients').value = (config.Recipients || []).join('\n');
-                    document.getElementById('EmailSubjectTemplate').value = config.EmailSubjectTemplate || '🎬 Your Weekly Jellyfin Update - {ItemCount} New Items';
-                    
-                    document.getElementById('ScheduleIntervalHours').value = config.ScheduleIntervalHours || 24;
-                    document.getElementById('DaysBackToScan').value = config.DaysBackToScan || 7;
-                    document.getElementById('MaxItemsPerNewsletter').value = config.MaxItemsPerNewsletter || 10;
-                    document.getElementById('ContentTypes').value = (config.ContentTypes || ['Movie', 'Series', 'MusicAlbum']).join(',');
-                    document.getElementById('IncludedLibraries').value = (config.IncludedLibraries || []).join(',');
-                    
-                    document.getElementById('IncludePosters').checked = config.IncludePosters !== false;
-                    document.getElementById('PosterHostingType').value = config.PosterHostingType || 'JellyfinAPI';
-                    document.getElementById('ImgurClientId').value = config.ImgurClientId || '';
-                    
-                    document.getElementById('EnableScheduledTask').checked = config.EnableScheduledTask !== false;
-                    
-                    Dashboard.hideLoadingMsg();
-                });
-            },
-            
-            saveConfig: function () {
-                Dashboard.showLoadingMsg();
-                
-                var config = {
-                    AIProvider: document.getElementById('AIProvider').value,
-                    AIApiKey: document.getElementById('AIApiKey').value,
-                    AIModel: document.getElementById('AIModel').value,
-                    AIBaseUrl: document.getElementById('AIBaseUrl').value,
-                    NewsletterTone: document.getElementById('NewsletterTone').value,
-                    EnablePersonalization: document.getElementById('EnablePersonalization').checked,
-                    CustomPromptAdditions: document.getElementById('CustomPromptAdditions').value,
-                    
-                    SmtpServer: document.getElementById('SmtpServer').value,
-                    SmtpPort: parseInt(document.getElementById('SmtpPort').value) || 587,
-                    SmtpUsername: document.getElementById('SmtpUsername').value,
-                    SmtpPassword: document.getElementById('SmtpPassword').value,
-                    SmtpUseSsl: document.getElementById('SmtpUseSsl').checked,
-                    SenderEmail: document.getElementById('SenderEmail').value,
-                    SenderName: document.getElementById('SenderName').value,
-                    Recipients: document.getElementById('Recipients').value.split('\n').filter(function(email) { return email.trim(); }),
-                    EmailSubjectTemplate: document.getElementById('EmailSubjectTemplate').value,
-                    
-                    ScheduleIntervalHours: parseInt(document.getElementById('ScheduleIntervalHours').value) || 24,
-                    DaysBackToScan: parseInt(document.getElementById('DaysBackToScan').value) || 7,
-                    MaxItemsPerNewsletter: parseInt(document.getElementById('MaxItemsPerNewsletter').value) || 10,
-                    ContentTypes: document.getElementById('ContentTypes').value.split(',').map(function(s) { return s.trim(); }).filter(function(s) { return s; }),
-                    IncludedLibraries: document.getElementById('IncludedLibraries').value.split(',').map(function(s) { return s.trim(); }).filter(function(s) { return s; }),
-                    
-                    IncludePosters: document.getElementById('IncludePosters').checked,
-                    PosterHostingType: document.getElementById('PosterHostingType').value,
-                    ImgurClientId: document.getElementById('ImgurClientId').value,
-                    
-                    EnableScheduledTask: document.getElementById('EnableScheduledTask').checked
-                };
-                
-                ApiClient.updatePluginConfiguration(AINewsletterConfig.pluginId, config).then(function () {
-                    Dashboard.processPluginConfigurationUpdateResult();
-                });
-            }
-        };
-        
-        document.getElementById('AINewsletterConfigForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            AINewsletterConfig.saveConfig();
+<script type="text/javascript">
+(function () {
+    var AINewsletterConfig = {
+        pluginUniqueId: '8B0B7F7A-3F8C-4F5D-9C2A-1E5F8B7A3C4D'
+    };
+
+    function loadConfig(page) {
+        Dashboard.showLoadingMsg();
+
+        ApiClient.getPluginConfiguration(AINewsletterConfig.pluginUniqueId).then(function (config) {
+            page.querySelector('#AIProvider').value = config.AIProvider || 'OpenAI';
+            page.querySelector('#AIApiKey').value = config.AIApiKey || '';
+            page.querySelector('#AIModel').value = config.AIModel || 'gpt-4o-mini';
+            page.querySelector('#AIBaseUrl').value = config.AIBaseUrl || 'https://api.openai.com/v1';
+            page.querySelector('#NewsletterTone').value = config.NewsletterTone || 'friendly';
+            page.querySelector('#EnablePersonalization').checked = config.EnablePersonalization !== false;
+            page.querySelector('#CustomPromptAdditions').value = config.CustomPromptAdditions || '';
+
+            page.querySelector('#SmtpServer').value = config.SmtpServer || '';
+            page.querySelector('#SmtpPort').value = config.SmtpPort || 587;
+            page.querySelector('#SmtpUsername').value = config.SmtpUsername || '';
+            page.querySelector('#SmtpPassword').value = config.SmtpPassword || '';
+            page.querySelector('#SmtpUseSsl').checked = config.SmtpUseSsl !== false;
+            page.querySelector('#SenderEmail').value = config.SenderEmail || '';
+            page.querySelector('#SenderName').value = config.SenderName || 'Jellyfin AI Newsletter';
+            page.querySelector('#Recipients').value = (config.Recipients || []).join('\n');
+            page.querySelector('#EmailSubjectTemplate').value = config.EmailSubjectTemplate || '🎬 Your Weekly Jellyfin Update - {ItemCount} New Items';
+
+            page.querySelector('#ScheduleIntervalHours').value = config.ScheduleIntervalHours || 24;
+            page.querySelector('#DaysBackToScan').value = config.DaysBackToScan || 7;
+            page.querySelector('#MaxItemsPerNewsletter').value = config.MaxItemsPerNewsletter || 10;
+            page.querySelector('#ContentTypes').value = (config.ContentTypes || ['Movie', 'Series', 'MusicAlbum']).join(',');
+            page.querySelector('#IncludedLibraries').value = (config.IncludedLibraries || []).join(',');
+
+            page.querySelector('#IncludePosters').checked = config.IncludePosters !== false;
+            page.querySelector('#PosterHostingType').value = config.PosterHostingType || 'JellyfinAPI';
+            page.querySelector('#ImgurClientId').value = config.ImgurClientId || '';
+
+            page.querySelector('#EnableScheduledTask').checked = config.EnableScheduledTask !== false;
+
+            Dashboard.hideLoadingMsg();
         });
-        
-        AINewsletterConfig.loadPage();
-    </script>
-</body>
-</html>
+    }
+
+    function saveConfig(page) {
+        Dashboard.showLoadingMsg();
+
+        var config = {
+            AIProvider: page.querySelector('#AIProvider').value,
+            AIApiKey: page.querySelector('#AIApiKey').value,
+            AIModel: page.querySelector('#AIModel').value,
+            AIBaseUrl: page.querySelector('#AIBaseUrl').value,
+            NewsletterTone: page.querySelector('#NewsletterTone').value,
+            EnablePersonalization: page.querySelector('#EnablePersonalization').checked,
+            CustomPromptAdditions: page.querySelector('#CustomPromptAdditions').value,
+
+            SmtpServer: page.querySelector('#SmtpServer').value,
+            SmtpPort: parseInt(page.querySelector('#SmtpPort').value) || 587,
+            SmtpUsername: page.querySelector('#SmtpUsername').value,
+            SmtpPassword: page.querySelector('#SmtpPassword').value,
+            SmtpUseSsl: page.querySelector('#SmtpUseSsl').checked,
+            SenderEmail: page.querySelector('#SenderEmail').value,
+            SenderName: page.querySelector('#SenderName').value,
+            Recipients: page.querySelector('#Recipients').value.split('\n').filter(function(email) { return email.trim(); }),
+            EmailSubjectTemplate: page.querySelector('#EmailSubjectTemplate').value,
+
+            ScheduleIntervalHours: parseInt(page.querySelector('#ScheduleIntervalHours').value) || 24,
+            DaysBackToScan: parseInt(page.querySelector('#DaysBackToScan').value) || 7,
+            MaxItemsPerNewsletter: parseInt(page.querySelector('#MaxItemsPerNewsletter').value) || 10,
+            ContentTypes: page.querySelector('#ContentTypes').value.split(',').map(function(s) { return s.trim(); }).filter(function(s) { return s; }),
+            IncludedLibraries: page.querySelector('#IncludedLibraries').value.split(',').map(function(s) { return s.trim(); }).filter(function(s) { return s; }),
+
+            IncludePosters: page.querySelector('#IncludePosters').checked,
+            PosterHostingType: page.querySelector('#PosterHostingType').value,
+            ImgurClientId: page.querySelector('#ImgurClientId').value,
+
+            EnableScheduledTask: page.querySelector('#EnableScheduledTask').checked
+        };
+
+        ApiClient.updatePluginConfiguration(AINewsletterConfig.pluginUniqueId, config).then(function (result) {
+            Dashboard.processPluginConfigurationUpdateResult(result);
+        });
+    }
+
+    window.AINewsletterConfigPage = {
+        loadConfig: loadConfig,
+        saveConfig: saveConfig
+    };
+
+    pageIdOn('pageinit', "AINewsletterConfigPage", function () {
+        var page = this;
+
+        page.querySelector('#AINewsletterConfigForm').addEventListener('submit', function (e) {
+            saveConfig(page);
+            e.preventDefault();
+            return false;
+        });
+    });
+
+    pageIdOn('pageshow', "AINewsletterConfigPage", function () {
+        loadConfig(this);
+    });
+
+})();
+</script>
