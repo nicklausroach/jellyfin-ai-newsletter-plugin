@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Jellyfin.Data.Enums;
 using Jellyfin.Plugin.AINewsletter.Configuration;
 using Jellyfin.Plugin.AINewsletter.Models;
 using MediaBrowser.Controller.Entities;
@@ -36,20 +37,7 @@ public class MediaAnalyzer : IMediaAnalyzer
                 Recursive = true,
                 OrderBy = new[] { (ItemSortBy.DateCreated, SortOrder.Descending) },
                 Limit = maxItems * 2, // Get more items to filter, in case some don't meet criteria
-                IncludeItemTypes = GetIncludeItemTypes(contentTypes),
-                DtoOptions = new MediaBrowser.Model.Dto.DtoOptions
-                {
-                    EnableImages = true,
-                    Fields = new[]
-                    {
-                        MediaBrowser.Model.Querying.ItemFields.Overview,
-                        MediaBrowser.Model.Querying.ItemFields.Genres,
-                        MediaBrowser.Model.Querying.ItemFields.People,
-                        MediaBrowser.Model.Querying.ItemFields.CommunityRating,
-                        MediaBrowser.Model.Querying.ItemFields.DateCreated,
-                        MediaBrowser.Model.Querying.ItemFields.ProductionYear
-                    }
-                }
+                IncludeItemTypes = GetIncludeItemTypes(contentTypes)
             };
 
             var items = _libraryManager.GetItemList(query);
@@ -102,22 +90,13 @@ public class MediaAnalyzer : IMediaAnalyzer
         // Add type-specific information
         switch (item)
         {
-            case Movie movie:
-                var director = movie.GetPeople()?.FirstOrDefault(p => p.Type == "Director");
-                mediaInfo.Director = director?.Name;
-                mediaInfo.Cast = movie.GetPeople()
-                    ?.Where(p => p.Type == "Actor")
-                    ?.Take(5)
-                    ?.Select(p => p.Name)
-                    ?.ToArray() ?? Array.Empty<string>();
+            case Movie:
+                // People information would be populated separately if needed
+                // For now, leave these fields empty as they require additional API calls
                 break;
 
-            case Series series:
-                mediaInfo.Cast = series.GetPeople()
-                    ?.Where(p => p.Type == "Actor")
-                    ?.Take(5)
-                    ?.Select(p => p.Name)
-                    ?.ToArray() ?? Array.Empty<string>();
+            case Series:
+                // People information would be populated separately if needed
                 break;
 
             case Season season:
@@ -184,34 +163,34 @@ public class MediaAnalyzer : IMediaAnalyzer
         return $"/Items/{item.Id}/Images/Primary";
     }
 
-    private string[] GetIncludeItemTypes(string[] contentTypes)
+    private BaseItemKind[] GetIncludeItemTypes(string[] contentTypes)
     {
-        var includeTypes = new List<string>();
+        var includeTypes = new List<BaseItemKind>();
 
         foreach (var type in contentTypes)
         {
             switch (type.ToLowerInvariant())
             {
                 case "movie":
-                    includeTypes.Add("Movie");
+                    includeTypes.Add(BaseItemKind.Movie);
                     break;
                 case "series":
-                    includeTypes.Add("Series");
+                    includeTypes.Add(BaseItemKind.Series);
                     break;
                 case "season":
-                    includeTypes.Add("Season");
+                    includeTypes.Add(BaseItemKind.Season);
                     break;
                 case "episode":
-                    includeTypes.Add("Episode");
+                    includeTypes.Add(BaseItemKind.Episode);
                     break;
                 case "musicalbum":
-                    includeTypes.Add("MusicAlbum");
+                    includeTypes.Add(BaseItemKind.MusicAlbum);
                     break;
                 case "audio":
-                    includeTypes.Add("Audio");
+                    includeTypes.Add(BaseItemKind.Audio);
                     break;
                 case "book":
-                    includeTypes.Add("Book");
+                    includeTypes.Add(BaseItemKind.Book);
                     break;
             }
         }

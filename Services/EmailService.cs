@@ -46,7 +46,7 @@ public class EmailService : IEmailService
             _logger.LogInformation("Email sent successfully to {Recipient}", recipient);
             return true;
         }
-        catch (SmtpAuthenticationException ex)
+        catch (SmtpException ex) when (ex.Message.Contains("authentication") || ex.Message.Contains("Authentication") || ex.Message.Contains("username") || ex.Message.Contains("password"))
         {
             _logger.LogError(ex, "SMTP authentication failed when sending email to {Recipient}. Check username and password.", recipient);
             return false;
@@ -86,7 +86,7 @@ public class EmailService : IEmailService
             _logger.LogInformation("SMTP connection test successful");
             return true;
         }
-        catch (SmtpAuthenticationException ex)
+        catch (SmtpException ex) when (ex.Message.Contains("authentication") || ex.Message.Contains("Authentication") || ex.Message.Contains("username") || ex.Message.Contains("password"))
         {
             _logger.LogError(ex, "SMTP authentication failed during connection test. Check username and password.");
             return false;

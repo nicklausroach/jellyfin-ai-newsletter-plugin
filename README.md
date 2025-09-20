@@ -38,7 +38,7 @@ An intelligent Jellyfin plugin that generates AI-powered email newsletters featu
 5. Restart your Jellyfin server
 
 ### Manual Installation
-1. Download the latest release from the [releases page](https://github.com/your-username/jellyfin-ai-newsletter-plugin/releases)
+1. Download the latest release from the [releases page](https://github.com/nicklausroach/jellyfin-ai-newsletter-plugin/releases)
 2. Extract the plugin files to your Jellyfin plugins directory
 3. Restart your Jellyfin server
 
@@ -152,8 +152,8 @@ This project is licensed under the GPL-3.0 License - see the [LICENSE](LICENSE) 
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/your-username/jellyfin-ai-newsletter-plugin/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-username/jellyfin-ai-newsletter-plugin/discussions)
+- **Issues**: [GitHub Issues](https://github.com/nicklausroach/jellyfin-ai-newsletter-plugin/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/nicklausroach/jellyfin-ai-newsletter-plugin/discussions)
 - **Jellyfin Community**: [Jellyfin Discord](https://jellyfin.org/contact)
 
 ## Acknowledgments
