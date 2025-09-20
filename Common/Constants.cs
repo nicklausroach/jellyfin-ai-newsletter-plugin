@@ -4,7 +4,7 @@ public static class Constants
 {
     public const string PluginName = "AI Newsletter";
     public const string PluginGuid = "8B0B7F7A-3F8C-4F5D-9C2A-1E5F8B7A3C4D";
-    public const string PluginVersion = "1.0.0.3";
+    public const string PluginVersion = "1.0.0.4";
     
     public static class LoggingEvents
     {

@@ -27,13 +27,10 @@ public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
 
     public IEnumerable<PluginPageInfo> GetPages()
     {
-        return new[]
+        yield return new PluginPageInfo
         {
-            new PluginPageInfo
-            {
-                Name = this.Name,
-                EmbeddedResourcePath = string.Format(CultureInfo.InvariantCulture, "{0}.Configuration.configPage.html", GetType().Namespace)
-            }
+            Name = this.Name,
+            EmbeddedResourcePath = $"{GetType().Namespace}.Configuration.configPage.html"
         };
     }
 }

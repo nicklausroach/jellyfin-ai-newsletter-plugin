@@ -6,7 +6,7 @@
 set -e  # Exit on any error
 
 # Configuration
-VERSION="1.0.0.3"
+VERSION="1.0.0.4"
 PLUGIN_NAME="jellyfin-plugin-ainewsletter"
 RELEASE_DIR="release"
 BUILD_CONFIG="Release"
@@ -109,21 +109,21 @@ calculate_checksums() {
         exit 1
     fi
 
-    # Calculate SHA256 checksum
+    # Calculate MD5 checksum
     local checksum=""
-    if command -v sha256sum >/dev/null 2>&1; then
-        checksum=$(sha256sum "${zip_name}" | cut -d' ' -f1)
-    elif command -v shasum >/dev/null 2>&1; then
-        checksum=$(shasum -a 256 "${zip_name}" | cut -d' ' -f1)
+    if command -v md5 >/dev/null 2>&1; then
+        checksum=$(md5 -q "${zip_name}")
+    elif command -v md5sum >/dev/null 2>&1; then
+        checksum=$(md5sum "${zip_name}" | cut -d' ' -f1)
     else
-        print_error "Neither sha256sum nor shasum found. Cannot calculate checksum."
+        print_error "Neither md5 nor md5sum found. Cannot calculate checksum."
         exit 1
     fi
 
-    echo "${checksum}" > "${zip_name}.sha256"
+    echo "${checksum}" > "${zip_name}.md5"
 
-    print_success "SHA256 checksum: ${checksum}"
-    print_success "Checksum saved to ${zip_name}.sha256"
+    print_success "MD5 checksum: ${checksum}"
+    print_success "Checksum saved to ${zip_name}.md5"
 
     # Create checksums for all files
     echo "# Jellyfin AI Newsletter Plugin v${VERSION} - File Checksums" > checksums.txt
@@ -132,10 +132,10 @@ calculate_checksums() {
 
     for file in *.zip *.tar.gz *.dll; do
         if [ -f "$file" ]; then
-            if command -v sha256sum >/dev/null 2>&1; then
-                sha256sum "$file" >> checksums.txt
-            elif command -v shasum >/dev/null 2>&1; then
-                shasum -a 256 "$file" >> checksums.txt
+            if command -v md5 >/dev/null 2>&1; then
+                md5 "$file" >> checksums.txt
+            elif command -v md5sum >/dev/null 2>&1; then
+                md5sum "$file" >> checksums.txt
             fi
         fi
     done
@@ -235,10 +235,10 @@ update_manifest_checksum() {
     local zip_name="${PLUGIN_NAME}_${VERSION}.zip"
     local checksum=""
 
-    if command -v sha256sum >/dev/null 2>&1; then
-        checksum=$(md5 "${zip_name}" | cut -d' ' -f1)
-    elif command -v shasum >/dev/null 2>&1; then
-        checksum=$(md5 -a 256 "${zip_name}" | cut -d' ' -f1)
+    if command -v md5 >/dev/null 2>&1; then
+        checksum=$(md5 -q "${zip_name}")
+    elif command -v md5sum >/dev/null 2>&1; then
+        checksum=$(md5sum "${zip_name}" | cut -d' ' -f1)
     fi
 
     cd ..
